@@ -85,7 +85,9 @@ def weather_view(request):
         current_weather = get_current_weather(city)
 
         if current_weather:
-            csv_path = os.path.join('D:\\2 semester\\Capstone\\Weather_Project\\weather.csv')
+            # ✅ Correct path: go up one level from weatherProject to reach /app
+            BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            csv_path = os.path.join(os.path.dirname(BASE_DIR), 'weather.csv')
             historical_data = pd.read_csv(csv_path)
 
             x, y, le = prepare_data(historical_data)
@@ -105,11 +107,6 @@ def weather_view(request):
             timezone = pytz.timezone('America/Toronto')
             now = datetime.now(timezone)
             future_times = [(now + timedelta(hours=i)).strftime("%H:00") for i in range(1, 6)]
-
-
-            #time1, time2, time3, time4, time5 = future_times
-            #temp1, temp2, temp3, temp4, temp5 = future_temp
-            #hum1, hum2, hum3, hum4, hum5 = future_humidity
 
             context = {
                 'city': city,
